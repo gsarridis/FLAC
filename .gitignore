@@ -1,0 +1,9 @@
+clusters/
+data/*
+!data/.gitkeep
+results/*
+!results/.gitkeep
+bias_capturing_classifiers/*
+!bias_capturing_classifiers/.gitkeep
+*.pyc
+*.pyo
