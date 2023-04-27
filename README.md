@@ -44,7 +44,7 @@ python train_imagenet.py
 ## Cite
 If you find this code useful in your research, please consider citing:
 ```
-@article{sarridis2022flac,
+@article{sarridis2023flac,
   title={FLAC: Fairness-Aware Representation Learning by Suppressing Attribute-Class Associations},
   author={Sarridis, Ioannis and Koutlis, Christos and Diou, Christos and Papadopoulos, Symeon},
   journal={TODO},
