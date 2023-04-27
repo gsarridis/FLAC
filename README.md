@@ -25,20 +25,20 @@ python train_biased_mnist.py --corr 0.999 --alpha 10000"
 
 4.For UTKFace run: 
 ````
-python train_utk_face.py --task race")
-python train_utk_face.py --task age")
+python train_utk_face.py --task race"
+python train_utk_face.py --task age"
 ````
 
 5.For CelebA run: 
 ````
-python train_celeba.py --task blonde --alpha 30000")
-python train_celeba.py --task makeup --alpha 20000")
+python train_celeba.py --task blonde --alpha 30000"
+python train_celeba.py --task makeup --alpha 20000"
 ````
 
 6.For Imagenet run: 
 ````
-python get_imagenet_bias_features.py")
-python train_imagenet.py")
+python get_imagenet_bias_features.py"
+python train_imagenet.py"
 ````
 
 ## Cite
