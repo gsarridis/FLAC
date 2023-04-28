@@ -41,6 +41,30 @@ python get_imagenet_bias_features.py
 python train_imagenet.py
 ````
 
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/classification-r-0-999-on-biased-mnist)](https://paperswithcode.com/sota/classification-r-0-999-on-biased-mnist?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/classification-r-0-997-on-biased-mnist)](https://paperswithcode.com/sota/classification-r-0-997-on-biased-mnist?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/classification-r-0-995-on-biased-mnist)](https://paperswithcode.com/sota/classification-r-0-995-on-biased-mnist?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/classification-r-0-990-on-biased-mnist)](https://paperswithcode.com/sota/classification-r-0-990-on-biased-mnist?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/heavymakeup-bias-conflicting-on-celeba)](https://paperswithcode.com/sota/heavymakeup-bias-conflicting-on-celeba?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/heavymakeup-unbiased-on-celeba)](https://paperswithcode.com/sota/heavymakeup-unbiased-on-celeba?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/haircolor-bias-conflicting-on-celeba)](https://paperswithcode.com/sota/haircolor-bias-conflicting-on-celeba?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/haircolor-unbiased-on-celeba)](https://paperswithcode.com/sota/haircolor-unbiased-on-celeba?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/age-unbiased-on-utkface)](https://paperswithcode.com/sota/age-unbiased-on-utkface?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/age-bias-conflicting-on-utkface)](https://paperswithcode.com/sota/age-bias-conflicting-on-utkface?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/race-unbiased-on-utkface)](https://paperswithcode.com/sota/race-unbiased-on-utkface?p=flac-fairness-aware-representation-learning)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/flac-fairness-aware-representation-learning/race-bias-conflicting-on-utkface)](https://paperswithcode.com/sota/race-bias-conflicting-on-utkface?p=flac-fairness-aware-representation-learning)
+
 ## Cite
 If you find this code useful in your research, please consider citing:
 ```
