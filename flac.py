@@ -40,7 +40,7 @@ def flac_loss(protected_attr_features, features, labels, d=1):
 
     # if mask is empty, return zero
     if sum(sum(mask)) == 0:
-        return torch.tensor(0.0).cuda()
+        return torch.tensor(0.0).to(labels.device)
     # similarity to distance
     protected_s = 1 - protected_s
 
