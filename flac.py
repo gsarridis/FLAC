@@ -36,7 +36,7 @@ def flac_loss(protected_attr_features, features, labels, d=1):
     th = (torch.max(protected_s) + torch.min(protected_s)) / 2
     # calc the mask
     mask = (labels[:, None] == labels) & (protected_s < th) | (labels[:, None] != labels) & (protected_s > th)
-    mask= mask.to('cuda:0')
+    mask= mask.to(labels.device)
 
     # if mask is empty, return zero
     if sum(sum(mask)) == 0:
