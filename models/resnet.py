@@ -20,7 +20,7 @@ class ResNet18(nn.Module):
             self.embed_size = 512
             self.num_classes = num_classes
             self.fc = model.fc
-        print(f'ResNet18 - num_classes: {num_classes} pretrained: {pretrained}')
+        print(f"ResNet18 - num_classes: {num_classes} pretrained: {pretrained}")
 
     def forward(self, x):
         out = self.extractor(x)

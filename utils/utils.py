@@ -16,9 +16,7 @@ class MultiDimAverageMeter(object):
         self.dims = dims
         self.cum = torch.zeros(np.prod(dims))
         self.cnt = torch.zeros(np.prod(dims))
-        self.idx_helper = torch.arange(np.prod(dims), dtype=torch.long).reshape(
-            *dims
-        )
+        self.idx_helper = torch.arange(np.prod(dims), dtype=torch.long).reshape(*dims)
 
     def add(self, vals, idxs):
         flattened_idx = torch.stack(
@@ -78,9 +76,9 @@ def accuracy(output, target, topk=(1,)):
 
 
 def set_seed(seed):
-    logging.info(f'=======> Using Fixed Random Seed: {seed} <========')
+    logging.info(f"=======> Using Fixed Random Seed: {seed} <========")
     random.seed(seed)
-    os.environ['PYTHONHASHSEED'] = str(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -89,30 +87,34 @@ def set_seed(seed):
     cudnn.benchmark = False  # set to False for final report
 
 
-
-
 def set_optimizer(opt, model):
-    optimizer = optim.SGD(model.parameters(),
-                          lr=opt.learning_rate,
-                          momentum=opt.momentum,
-                          weight_decay=opt.weight_decay)
+    optimizer = optim.SGD(
+        model.parameters(),
+        lr=opt.learning_rate,
+        momentum=opt.momentum,
+        weight_decay=opt.weight_decay,
+    )
     return optimizer
 
 
 def save_model(model, optimizer, opt, epoch, save_file):
     state = {
-        'opt': opt,
-        'model': model.state_dict(),
-        'optimizer': optimizer.state_dict(),
-        'epoch': epoch,
+        "opt": opt,
+        "model": model.state_dict(),
+        "optimizer": optimizer.state_dict(),
+        "epoch": epoch,
     }
     torch.save(state, save_file)
     del state
 
+
 def load_model(path):
     state = torch.load(path)
-    return state['model']
-    
-class pretty_dict(dict):                                              
+    return state["model"]
+
+
+class pretty_dict(dict):
     def __str__(self):
-        return str({k: round(v, 3) if isinstance(v,float) else v for k, v in self.items()})
+        return str(
+            {k: round(v, 3) if isinstance(v, float) else v for k, v in self.items()}
+        )

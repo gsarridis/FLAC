@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class SimpleConvNet(nn.Module):
     def __init__(self, kernel_size=7, **kwargs):
         super(SimpleConvNet, self).__init__()
@@ -26,14 +27,14 @@ class SimpleConvNet(nn.Module):
         self.fc = nn.Linear(128, 10)
         self.dim_in = 128
 
-        print(f'SimpleConvNet: kernel_size {kernel_size}')
+        print(f"SimpleConvNet: kernel_size {kernel_size}")
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
-    
+
     def get_last_shared_layer(self):
         return self.fc
 

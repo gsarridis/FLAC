@@ -11,28 +11,30 @@ import torch.nn.functional as F
 from torch.utils.model_zoo import load_url as load_state_dict_from_url
 
 MODEL_URLS = {
-    'bagnet9': 'https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet8-34f4ccd2.pth.tar',
-    'bagnet17': 'https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet16-105524de.pth.tar',
-    'bagnet33': 'https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet32-2ddd53ed.pth.tar',
-    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-    'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
-    'resnet101': 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
-    'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
-    'resnext50_32x4d': 'https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth',
-    'resnext101_32x8d': 'https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth',
-    'wide_resnet50_2': 'https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth',
-    'wide_resnet101_2': 'https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth',
+    "bagnet9": "https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet8-34f4ccd2.pth.tar",
+    "bagnet17": "https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet16-105524de.pth.tar",
+    "bagnet33": "https://bitbucket.org/wielandbrendel/bag-of-feature-pretrained-models/raw/249e8fa82c0913623a807d9d35eeab9da7dcc2a8/bagnet32-2ddd53ed.pth.tar",
+    "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",
+    "resnet34": "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
+    "resnet50": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
+    "resnet101": "https://download.pytorch.org/models/resnet101-5d3b4d8f.pth",
+    "resnet152": "https://download.pytorch.org/models/resnet152-b121ed2d.pth",
+    "resnext50_32x4d": "https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth",
+    "resnext101_32x8d": "https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth",
+    "wide_resnet50_2": "https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth",
+    "wide_resnet101_2": "https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth",
 }
 
 
 class BasicBlock_(nn.Module):
     expansion = 1
-    __constants__ = ['downsample']
+    __constants__ = ["downsample"]
 
     def __init__(self, inplanes, planes, stride=1, downsample=None, kernel_size=1):
         super(BasicBlock_, self).__init__()
-        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=kernel_size, stride=stride, bias=False)
+        self.conv1 = nn.Conv2d(
+            inplanes, planes, kernel_size=kernel_size, stride=stride, bias=False
+        )
         self.bn1 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=1, bias=False)
@@ -70,8 +72,14 @@ class Bottleneck_(nn.Module):
         super(Bottleneck_, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=kernel_size, stride=stride,
-                               padding=0, bias=False)  # changed padding from (kernel_size - 1) // 2
+        self.conv2 = nn.Conv2d(
+            planes,
+            planes,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=0,
+            bias=False,
+        )  # changed padding from (kernel_size - 1) // 2
         self.bn2 = nn.BatchNorm2d(planes)
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(planes * 4)
@@ -107,8 +115,16 @@ class Bottleneck_(nn.Module):
 
 
 class BagNetDeep(nn.Module):
-    def __init__(self, block, layers, strides=[2, 2, 2, 1], kernel3=[0, 0, 0, 0], num_classes=1000,
-                 feature_pos='post', avg_pool=True):
+    def __init__(
+        self,
+        block,
+        layers,
+        strides=[2, 2, 2, 1],
+        kernel3=[0, 0, 0, 0],
+        num_classes=1000,
+        feature_pos="post",
+        avg_pool=True,
+    ):
         super(BagNetDeep, self).__init__()
         self.inplanes = 64
         self.feature_pos = feature_pos
@@ -116,10 +132,33 @@ class BagNetDeep(nn.Module):
         self.conv2 = nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=0, bias=False)
         self.bn1 = nn.BatchNorm2d(64, momentum=0.001)
         self.relu = nn.ReLU(inplace=True)
-        self.layer1 = self._make_layer(block, 64, layers[0], stride=strides[0], kernel3=kernel3[0], prefix='layer1')
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=strides[1], kernel3=kernel3[1], prefix='layer2')
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=strides[2], kernel3=kernel3[2], prefix='layer3')
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=strides[3], kernel3=kernel3[3], prefix='layer4')
+        self.layer1 = self._make_layer(
+            block, 64, layers[0], stride=strides[0], kernel3=kernel3[0], prefix="layer1"
+        )
+        self.layer2 = self._make_layer(
+            block,
+            128,
+            layers[1],
+            stride=strides[1],
+            kernel3=kernel3[1],
+            prefix="layer2",
+        )
+        self.layer3 = self._make_layer(
+            block,
+            256,
+            layers[2],
+            stride=strides[2],
+            kernel3=kernel3[2],
+            prefix="layer3",
+        )
+        self.layer4 = self._make_layer(
+            block,
+            512,
+            layers[3],
+            stride=strides[3],
+            kernel3=kernel3[3],
+            prefix="layer4",
+        )
         self.avgpool = nn.AvgPool2d(1, stride=1)
         self.dim_in = 512 * block.expansion
         self.fc = nn.Linear(512 * block.expansion, num_classes)
@@ -129,23 +168,30 @@ class BagNetDeep(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, math.sqrt(2. / n))
+                m.weight.data.normal_(0, math.sqrt(2.0 / n))
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
 
-    def _make_layer(self, block, planes, blocks, stride=1, kernel3=0, prefix=''):
+    def _make_layer(self, block, planes, blocks, stride=1, kernel3=0, prefix=""):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(
+                    self.inplanes,
+                    planes * block.expansion,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
         layers = []
         kernel = 1 if kernel3 == 0 else 3
-        layers.append(block(self.inplanes, planes, stride, downsample, kernel_size=kernel))
+        layers.append(
+            block(self.inplanes, planes, stride, downsample, kernel_size=kernel)
+        )
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
             kernel = 1 if kernel3 <= i else 3
@@ -178,7 +224,7 @@ class BagNetDeep(nn.Module):
         x = self.relu(x)
 
         for i in range(1, 5):
-            x = eval(f'self.layer{i}')(x)
+            x = eval(f"self.layer{i}")(x)
             if i == layer:
                 return x
 
@@ -189,16 +235,30 @@ class BagNetDeep(nn.Module):
         return x
 
 
-def bagnet18(feature_pos='post', num_classes=1000, rf=43):
-    model = BagNetDeep(BasicBlock_, [2, 2, 2, 2], strides=[2, 2, 2, 1], kernel3=[1, 0, 0, 0],
-                       num_classes=num_classes, feature_pos=feature_pos)
+def bagnet18(feature_pos="post", num_classes=1000, rf=43):
+    model = BagNetDeep(
+        BasicBlock_,
+        [2, 2, 2, 2],
+        strides=[2, 2, 2, 1],
+        kernel3=[1, 0, 0, 0],
+        num_classes=num_classes,
+        feature_pos=feature_pos,
+    )
     return model
 
 
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=dilation, groups=groups, bias=False, dilation=dilation)
+    return nn.Conv2d(
+        in_planes,
+        out_planes,
+        kernel_size=3,
+        stride=stride,
+        padding=dilation,
+        groups=groups,
+        bias=False,
+        dilation=dilation,
+    )
 
 
 def conv1x1(in_planes, out_planes, stride=1):
@@ -208,15 +268,25 @@ def conv1x1(in_planes, out_planes, stride=1):
 
 class BasicBlock(nn.Module):
     expansion = 1
-    __constants__ = ['downsample']
+    __constants__ = ["downsample"]
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, groups=1,
-                 base_width=64, dilation=1, norm_layer=None, return_feature=False):
+    def __init__(
+        self,
+        inplanes,
+        planes,
+        stride=1,
+        downsample=None,
+        groups=1,
+        base_width=64,
+        dilation=1,
+        norm_layer=None,
+        return_feature=False,
+    ):
         super(BasicBlock, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         if groups != 1 or base_width != 64:
-            raise ValueError('BasicBlock only supports groups=1 and base_width=64')
+            raise ValueError("BasicBlock only supports groups=1 and base_width=64")
         if dilation > 1:
             raise NotImplementedError("Dilation > 1 not supported in BasicBlock")
         # Both self.conv1 and self.downsample layers downsample the input when stride != 1
@@ -253,14 +323,23 @@ class BasicBlock(nn.Module):
 
 class Bottleneck(nn.Module):
     expansion = 4
-    __constants__ = ['downsample']
+    __constants__ = ["downsample"]
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, groups=1,
-                 base_width=64, dilation=1, norm_layer=None):
+    def __init__(
+        self,
+        inplanes,
+        planes,
+        stride=1,
+        downsample=None,
+        groups=1,
+        base_width=64,
+        dilation=1,
+        norm_layer=None,
+    ):
         super(Bottleneck, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
-        width = int(planes * (base_width / 64.)) * groups
+        width = int(planes * (base_width / 64.0)) * groups
         # Both self.conv2 and self.downsample layers downsample the input when stride != 1
         self.conv1 = conv1x1(inplanes, width)
         self.bn1 = norm_layer(width)
@@ -296,10 +375,20 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, layers, feature_mode=False, num_classes=1000, feature_pos='post',
-                 zero_init_residual=False,
-                 groups=1, width_per_group=64, replace_stride_with_dilation=None,
-                 norm_layer=None, rf=None):
+    def __init__(
+        self,
+        block,
+        layers,
+        feature_mode=False,
+        num_classes=1000,
+        feature_pos="post",
+        zero_init_residual=False,
+        groups=1,
+        width_per_group=64,
+        replace_stride_with_dilation=None,
+        norm_layer=None,
+        rf=None,
+    ):
         super(ResNet, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
@@ -314,28 +403,34 @@ class ResNet(nn.Module):
             # the 2x2 stride with a dilated convolution instead
             replace_stride_with_dilation = [False, False, False]
         if len(replace_stride_with_dilation) != 3:
-            raise ValueError("replace_stride_with_dilation should be None "
-                             "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
+            raise ValueError(
+                "replace_stride_with_dilation should be None "
+                "or a 3-element tuple, got {}".format(replace_stride_with_dilation)
+            )
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
-                               bias=False)
+        self.conv1 = nn.Conv2d(
+            3, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False
+        )
         self.bn1 = norm_layer(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, 64, layers[0])
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=2,
-                                       dilate=replace_stride_with_dilation[0])
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=2,
-                                       dilate=replace_stride_with_dilation[1])
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
-                                       dilate=replace_stride_with_dilation[2])
+        self.layer2 = self._make_layer(
+            block, 128, layers[1], stride=2, dilate=replace_stride_with_dilation[0]
+        )
+        self.layer3 = self._make_layer(
+            block, 256, layers[2], stride=2, dilate=replace_stride_with_dilation[1]
+        )
+        self.layer4 = self._make_layer(
+            block, 512, layers[3], stride=2, dilate=replace_stride_with_dilation[2]
+        )
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
@@ -364,14 +459,32 @@ class ResNet(nn.Module):
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, self.groups,
-                            self.base_width, previous_dilation, norm_layer))
+        layers.append(
+            block(
+                self.inplanes,
+                planes,
+                stride,
+                downsample,
+                self.groups,
+                self.base_width,
+                previous_dilation,
+                norm_layer,
+            )
+        )
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            last_block = (i == blocks - 1)
-            layers.append(block(self.inplanes, planes, groups=self.groups,
-                                base_width=self.base_width, dilation=self.dilation,
-                                norm_layer=norm_layer, return_feature=last_block and self.feature_mode))
+            last_block = i == blocks - 1
+            layers.append(
+                block(
+                    self.inplanes,
+                    planes,
+                    groups=self.groups,
+                    base_width=self.base_width,
+                    dilation=self.dilation,
+                    norm_layer=norm_layer,
+                    return_feature=last_block and self.feature_mode,
+                )
+            )
 
         return nn.Sequential(*layers)
 
@@ -401,7 +514,7 @@ class ResNet(nn.Module):
         x = self.maxpool(x)
 
         for i in range(1, 5):
-            x, feat = eval(f'self.layer{i}')(x)
+            x, feat = eval(f"self.layer{i}")(x)
             if i == layer:
                 return feat
 
@@ -412,21 +525,40 @@ class ResNet(nn.Module):
         return x
 
 
-def _resnet(arch, block, layers, pretrained, progress, rf, num_classes, feature_pos, **kwargs):
-    model = ResNet(block, layers, rf=rf, num_classes=num_classes, feature_pos=feature_pos, **kwargs)
+def _resnet(
+    arch, block, layers, pretrained, progress, rf, num_classes, feature_pos, **kwargs
+):
+    model = ResNet(
+        block, layers, rf=rf, num_classes=num_classes, feature_pos=feature_pos, **kwargs
+    )
     if pretrained:
-        state_dict = load_state_dict_from_url(MODEL_URLS[arch],
-                                              progress=progress)
+        state_dict = load_state_dict_from_url(MODEL_URLS[arch], progress=progress)
         model.load_state_dict(state_dict, strict=False)
     return model
 
 
-def resnet18(feature_pos='post', num_classes=1000, rf=43, pretrained=False, progress=True, **kwargs):
+def resnet18(
+    feature_pos="post",
+    num_classes=1000,
+    rf=43,
+    pretrained=False,
+    progress=True,
+    **kwargs,
+):
     r"""ResNet-18 model from
     `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, progress, rf, num_classes, feature_pos,
-                   **kwargs)
+    return _resnet(
+        "resnet18",
+        BasicBlock,
+        [2, 2, 2, 2],
+        pretrained,
+        progress,
+        rf,
+        num_classes,
+        feature_pos,
+        **kwargs,
+    )

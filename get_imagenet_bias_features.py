@@ -12,13 +12,12 @@ from models.imagenet_models import bagnet18
 from utils.utils import AverageMeter, accuracy, set_seed
 from tqdm import tqdm
 
+
 def train_biased_model(g_net, tr_loader, n_epochs=120):
     g_opt = torch.optim.Adam(g_net.parameters(), lr=1e-3)
-    g_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        g_opt, n_epochs
-    )
+    g_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(g_opt, n_epochs)
 
-    print(f'train_biased_model - opt: {g_opt}, sched: {g_scheduler}')
+    print(f"train_biased_model - opt: {g_opt}, sched: {g_scheduler}")
 
     g_net.train()
     top1 = AverageMeter()
@@ -34,28 +33,32 @@ def train_biased_model(g_net, tr_loader, n_epochs=120):
             loss.backward()
             g_opt.step()
 
-            prec1, = accuracy(pred, y, topk=(1,))
-            bias_prec1, = accuracy(pred, bias, topk=(1,))
+            (prec1,) = accuracy(pred, y, topk=(1,))
+            (bias_prec1,) = accuracy(pred, bias, topk=(1,))
             top1.update(prec1.item(), N)
             bias_top1.update(bias_prec1.item(), N)
         g_scheduler.step()
-        print(f'Training biased model - Epoch: {n} acc: {top1.avg}, bias acc: {bias_top1.avg}')
-        torch.save(g_net.state_dict(), './imagenet_biased_feats/model.pth')
-    print(f'Training biased model done - final acc: {top1.avg}, bias acc: {bias_top1.avg}')
+        print(
+            f"Training biased model - Epoch: {n} acc: {top1.avg}, bias acc: {bias_top1.avg}"
+        )
+        torch.save(g_net.state_dict(), "./imagenet_biased_feats/model.pth")
+    print(
+        f"Training biased model done - final acc: {top1.avg}, bias acc: {bias_top1.avg}"
+    )
 
     return g_net
 
 
 def parse_option():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gpu', type=int, default=0)
+    parser.add_argument("--gpu", type=int, default=0)
 
-    parser.add_argument('--seed', type=int, default=1)
-    parser.add_argument('--bs', type=int, default=64, help='batch_size')
-    parser.add_argument('--ckpt', action='store_true')
+    parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--bs", type=int, default=64, help="batch_size")
+    parser.add_argument("--ckpt", action="store_true")
 
     opt = parser.parse_args()
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(opt.gpu)
+    os.environ["CUDA_VISIBLE_DEVICES"] = str(opt.gpu)
 
     return opt
 
@@ -95,28 +98,29 @@ def main():
     opt = parse_option()
     set_seed(opt.seed)
 
-    root = './data/imagenet'
+    root = "./data/imagenet"
     train_loader = get_imagenet(
-        f'{root}/train',
-        f'{root}/train',
+        f"{root}/train",
+        f"{root}/train",
         batch_size=128,
         train=True,
-        aug=False, )
+        aug=False,
+    )
 
     model = bagnet18(num_classes=9).cuda()
     model.cuda()
     # model = train_biased_model(model, train_loader)
-    model.load_state_dict(torch.load('./bias_capturing_classifiers/bcc_imagenet.pth'))
+    model.load_state_dict(torch.load("./bias_capturing_classifiers/bcc_imagenet.pth"))
     all_feats = get_features(model, train_loader)
     targets = torch.tensor([t for _, t in train_loader.dataset.dataset])
     marginal = get_marginal(all_feats, targets, 9)
-    save_path = Path(f'imagenet_biased_feats/imagenet-seed{opt.seed}')
+    save_path = Path(f"imagenet_biased_feats/imagenet-seed{opt.seed}")
     save_path.mkdir(parents=True, exist_ok=True)
-    torch.save(all_feats, save_path / 'bias_feats.pt')
+    torch.save(all_feats, save_path / "bias_feats.pt")
     print(f"Saved feats at {save_path / 'bias_feats.pt'}")
-    torch.save(marginal, save_path / 'marginal.pt')
+    torch.save(marginal, save_path / "marginal.pt")
     print(f"Saved marginal at {save_path / 'marginal.pt'}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

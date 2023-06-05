@@ -19,7 +19,9 @@ def get_confusion_matrix(num_classes, targets, biases):
         confusion_matrix_org_by[t.long(), p.long()] += 1
 
     confusion_matrix = confusion_matrix_org / confusion_matrix_org.sum(1).unsqueeze(1)
-    confusion_matrix_by = confusion_matrix_org_by / confusion_matrix_org_by.sum(1).unsqueeze(1)
+    confusion_matrix_by = confusion_matrix_org_by / confusion_matrix_org_by.sum(
+        1
+    ).unsqueeze(1)
     # confusion_matrix = confusion_matrix_org / confusion_matrix_org.sum()
     return confusion_matrix_org, confusion_matrix, confusion_matrix_by
 
