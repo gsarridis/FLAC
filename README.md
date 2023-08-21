@@ -13,7 +13,7 @@ conda env create -f pytorch36_environment.yml
 ## Run the code
 1.Download and extract UTKFace, CelebA, Imagenet, and Imagenet-A to a data folder.
 
-2.Download the provided bias-capturing classifiers from the releases and put them under the bias_capturing_classifiers folder.
+2.Download the provided [bias-capturing classifiers](https://github.com/gsarridis/FLAC/releases/tag/bcc) and put them under the bias_capturing_classifiers folder.
 
 3.For Biased-MNIST run: 
 ````
