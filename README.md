@@ -68,10 +68,11 @@ python train_imagenet.py
 ## Cite
 If you find this code useful in your research, please consider citing:
 ```
-@article{sarridis2023flac,
-  title={FLAC: Fairness-Aware Representation Learning by Suppressing Attribute-Class Associations},
+@article{sarridis2024flac,
+  title={Flac: Fairness-aware representation learning by suppressing attribute-class associations},
   author={Sarridis, Ioannis and Koutlis, Christos and Papadopoulos, Symeon and Diou, Christos},
-  journal={arXiv preprint arXiv:2304.14252},
-  year={2023}
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2024},
+  publisher={IEEE}
 }
 ```
