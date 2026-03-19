@@ -1,7 +1,14 @@
 # FLAC: Fairness-Aware Representation Learning by Suppressing Attribute-Class Associations
 [![MAI_BIAS toolkit](https://img.shields.io/badge/MAI_BIAS-fairness_tools-blue?logo=github)](https://mammoth-eu.github.io/mammoth-commons/index.html)
 
+This software is part of MAI-BIAS; a low-code toolkit for
+fairness analysis and mitigation, with an accompanying suite of coding
+tools. Our ecosystem operates in multidimensional and multi-attribute
+settings (safeguarding multiple races, genders, etc), and across multiple
+data modalities (like tabular data, images, text, graphs). Learn more
+[here](https://mammoth-eu.github.io/mammoth-commons/index.html).
 
+---
 ## 🌍 Overview
 <p align="center">
   <img width="438" height="346" alt="image" src="https://github.com/user-attachments/assets/744e3f66-ef46-4665-abed-1123fa67b144" />
@@ -103,13 +110,6 @@ python train_celeba.py --task makeup --alpha 20000
 python get_imagenet_bias_features.py  
 python train_imagenet.py  
 ```
----
-
-
-## 🧩 Part of a Larger Ecosystem
-FLAC is part of the MAI-BIAS Toolkit, consisting of numerous modules, which collectively form a complete pipeline for **building, analyzing, and validating fair AI systems**.
-
-
 ---
 
 ## 📖 Citation
