@@ -1,5 +1,5 @@
 # FLAC: Fairness-Aware Representation Learning by Suppressing Attribute-Class Associations
-[![MAI_BIAS toolkit](https://img.shields.io/badge/MAI_BIAS-fairness_tools-blue?logo=github)](https://mammoth-eu.github.io/mammoth-commons/index.html)
+[![MAI_BIAS toolkit](https://img.shields.io/badge/MAI_BIAS-⚖️_AI_fairness_tool-white)](https://mammoth-eu.github.io/mammoth-commons/index.html)
 
 This software is part of MAI-BIAS; a low-code toolkit for
 fairness analysis and mitigation, with an accompanying suite of coding
